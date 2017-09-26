@@ -148,6 +148,16 @@ function pwa_kaltura() {
 
         // Listen for error events.
         player.addEventListener('error', onErrorEvent);
+        var video = document.getElementById('video');
+
+
+
+        if (navigator.onLine){
+            delete video.dataset.offlineEncrypted;
+        }else{
+            video.dataset.offlineEncrypted=true;
+        }
+
 
         // Try to load a manifest.
         // This is an asynchronous process.
