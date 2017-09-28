@@ -1,7 +1,7 @@
 function pwa_kaltura() {
-    var manifestUriClear = 'https://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/http/format/mpegdash/flavorIds/0_m131krws,0_kozg4x1x/a.mpd';
-    var manifestUriDRM = 'https://qa-nginx-vod.dev.kaltura.com/edash/p/4171/sp/417100/serveFlavor/entryId/0_4s6xvtx3/v/2/flavorId/0_,kl0tqbr3,t0bg9cqj,912xg2u3,0rdjs0pd,jwu3hnke,cmvt96h8,pxprgwpp,e29ge7b9,/forceproxy/true/name/a.mp4.urlset/manifest.mpd';
-    var licenseUrl = 'https://udrm2.dev.kaltura.com/cenc/widevine/license?custom_data=eyJjYV9zeXN0ZW0iOiJPVlAiLCJ1c2VyX3Rva2VuIjoiTmpFeVpqRmhZV0U0TldJM05EQmtPV1k1T0dZMk0yWm1aRGM0TW1KalpEaGxPVE5pWVRCaE4zdzBNVGN4T3pReE56RTdNVFV3TmpVeE1UVTBOanN3T3pFMU1EWTBNalV4TkRZdU1qa3lOanN3TzNacFpYYzZLaXgzYVdSblpYUTZNVHM3IiwiYWNjb3VudF9pZCI6NDE3MSwiY29udGVudF9pZCI6IjBfNHM2eHZ0eDMiLCJmaWxlcyI6IjBfa2wwdHFicjMsMF90MGJnOWNxaiwwXzkxMnhnMnUzIn0%3D&signature=GlyQUVpVccdCWh70uwfY%2FqU%2BRvY%3D';
+    var manifestUriClear = 'https://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/https/format/mpegdash/flavorIds/0_m131krws,0_kozg4x1x/a.mpd';
+    var manifestUriDRM = 'https://qa-apache-php7.dev.kaltura.com/p/4171/sp/417100/playManifest/entryId/0_4s6xvtx3/protocol/https/format/mpegdash/flavorIds/0_kl0tqbr3,0_t0bg9cqj,0_912xg2u3/a.mpd';
+    var licenseUrl = 'https://udrm2.dev.kaltura.com/cenc/widevine/license?custom_data=eyJjYV9zeXN0ZW0iOiJPVlAiLCJ1c2VyX3Rva2VuIjoiWm1RM1pUUTRZV0ZpWWpaalpUQmhNVGRtWm1VMU5XSmlObUZrWlRZeU5EVTJOelZqTkRCa01udzBNVGN4T3pReE56RTdNVFV3TmpZM01UVXpOVHN3T3pFMU1EWTFPRFV4TXpVdU1EUTVPVHN3TzNacFpYYzZLaXgzYVdSblpYUTZNVHM3IiwiYWNjb3VudF9pZCI6NDE3MSwiY29udGVudF9pZCI6IjBfNHM2eHZ0eDMiLCJmaWxlcyI6IjBfa2wwdHFicjMsMF90MGJnOWNxaiwwXzkxMnhnMnUzIn0%3D&signature=FusQnIwheWf%2BiK3hdrnBu4eRVn8%3D';
 
     // long video
     //var manifes
