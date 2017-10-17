@@ -8,13 +8,11 @@ var number = 0;
 
 
 self.addEventListener('install', function(event) {
-    // Perform install steps adds needs update update update
+    // Perform install steps adds needs update update update update
     event.waitUntil(
         caches.open(cacheName).then(function(cache) {
             return cache.addAll(
                 [
-                 'https://cdnapisec.kaltura.com/p/1982551/sp/198255100/playManifest/entryId/0_rgc5b6a0/format/mpegdash/tags/dash/protocol/https/f/a.mpd',
-                 'https://qa-apache-php7.dev.kaltura.com/p/4171/sp/417100/playManifest/entryId/0_4s6xvtx3/protocol/https/format/mpegdash/flavorIds/0_kl0tqbr3,0_t0bg9cqj,0_912xg2u3/a.mpd',
                  'https://cdnapisec.kaltura.com/p/1982551/sp/198255100/playManifest/entryId/0_rgc5b6a0/format/mpegdash/tags/dash/protocol/https/flavorIds/0_t02pp03c/a.mpd',
                  'index.html',
                  'shaka-player.compiled.js',

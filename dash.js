@@ -5278,13 +5278,8 @@ getUrls =  function (source,callback) {
     this.getManifest(source)
         .then(this.getSegmentsAndByteLengthFromManifest.bind(this))
         .then(function (data) {
-            var urls = [];
-            for (var i in data.segments){
-                for (var j in data.segments[i].fragments){
-                    urls.push(data.segments[i].fragments[j].url)
-                }
-            }
-            callback(urls);
+
+            callback(data.urls);
         })
         .catch(function (error) {
             console.error(error);
@@ -5300,6 +5295,7 @@ getUrls =  function (source,callback) {
 getSegmentsAndByteLengthFromManifest =  function ($manifest) {
     var _this = this;
     var segments = []; // urlTemplate, startNumber, matchingUrl, matchingFileName
+    var urlArr = [];
     var mediaDurationISO = $($manifest.find('MPD')[0]).attr('mediaPresentationDuration');
     var mediaDuration =moment.duration(mediaDurationISO).asMilliseconds();
     var mediaByteLength = 0;
@@ -5347,6 +5343,7 @@ getSegmentsAndByteLengthFromManifest =  function ($manifest) {
                 initialUrlSegment.fragments = [{
                     url: initialUrlSegment.urlTemplate
                 }];
+                urlArr.push(initialUrlSegment.fragments[0].url);
 
                 mediaUrlSegment.urlTemplate = mediaUrlTemplate.replace('$RepresentationID$', id);
                 mediaUrlSegment.matchingFileName =
@@ -5358,7 +5355,9 @@ getSegmentsAndByteLengthFromManifest =  function ($manifest) {
                     mediaUrlSegment.fragments.push({
                         url: mediaUrlSegment.urlTemplate.replace('$Number$', i)
                     });
+                    urlArr.push(mediaUrlSegment.urlTemplate.replace('$Number$', i));
                 }
+
 
                 segments.push(initialUrlSegment, mediaUrlSegment);
             });
@@ -5398,6 +5397,7 @@ getSegmentsAndByteLengthFromManifest =  function ($manifest) {
 
     return {
         segments: segments,
+        urls: urlArr,
         byteLength: mediaByteLength
     };
 }
