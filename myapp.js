@@ -70,10 +70,13 @@ function pwa_kaltura() {
             kalturaPlayer = KalturaPlayer.setup('player-placeholder', config);
             configureSession(config);
             kalturaPlayer.play();
+            checkIfExists(config.id);
 
         } catch (e) {
             console.error(e.message)
         }
+
+
     }
 
 
@@ -96,15 +99,61 @@ function pwa_kaltura() {
 
         document.getElementById("saveMedia").addEventListener('click',function(){
             saveMedia(configs[configIndex]);
+            changeToDownloading();
         });
 
         navigator.serviceWorker.addEventListener('message', function (event) {
-            console.log("event from sw: " + JSON.stringify(event.data))
-            window.postMessage(event.data, '*');
+            console.log("event from sw: " + JSON.stringify(event.data));
+            handleMessages(event.data);
+        });
+
+        document.getElementById("remove").addEventListener('click',function(){
+            removeMedia(configs[configIndex].id);
         });
 
      }
 
+
+     function handleMessages(message){
+        switch (message.action){
+            case 'backgroundfetch':
+                if (message.name === configs[configIndex].id && message.success){
+                    changeToDownloaded();
+                }
+                break;
+            case 'isExists':
+                if (message.isExists && message.name === configs[configIndex].id){
+                    changeToDownloaded();
+                }
+                break;
+            case 'removed':
+                if (message.removed && message.name === configs[configIndex].id){
+                    changeToDownload();
+                }
+                break;
+            default:
+                break;
+        }
+     }
+
+     function changeToDownload(){
+         var downloadBtn = document.getElementById("saveMedia");
+         document.getElementById("downloadingAni").style.display = "none";
+         downloadBtn.innerText = "Download";
+         downloadBtn.style.backgroundColor = "#d84a38";
+     }
+
+     function changeToDownloading(){
+        document.getElementById("downloadingAni").style.display = "block";
+        document.getElementById("saveMedia").innerText = "downloading...";
+     }
+
+     function changeToDownloaded(){
+         var downloadBtn = document.getElementById("saveMedia");
+         document.getElementById("downloadingAni").style.display = "none";
+         downloadBtn.innerText = "Downloaded";
+         downloadBtn.style.backgroundColor = "#219054";
+     }
 
      function changeMedia(config){
         try {
@@ -115,7 +164,6 @@ function pwa_kaltura() {
             console.error(e.message)
         }
      }
-
 
      function configureSession(config){
          var video = document.getElementsByTagName("video")[0];
@@ -165,12 +213,21 @@ function pwa_kaltura() {
      }
 
 
-    function removeMedia(mediaId){
+    function removeMedia(tag){
         var message = {
             action: "remove",
-            tag: mediaId
+            tag: tag
         };
         navigator.serviceWorker.controller.postMessage(message);
+    }
+
+    function checkIfExists(tag){
+        var message = {
+            action: "ifExists",
+            tag: tag
+        };
+        navigator.serviceWorker.controller.postMessage(message);
+
     }
 
     return{

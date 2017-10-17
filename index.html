@@ -3,38 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-    <title>Title</title>
-    <style>
-        body {
-            background-color: #212121;
-            padding: 0;
-            margin: 0;
-            text-align: center;
-        }
-
-        #player-placeholder-container {
-            display: block;
-            margin: auto;
-            max-width: 854px;
-            position: relative;
-        }
-
-        #player-placeholder {
-            position: relative;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 0;
-            padding-bottom: 56.5%;
-            background-color: #000;
-        }
-    </style>
+    <title>Kaltura - offline PWA demo</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
             crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="myapp.css">
-    <!-- Shaka Player uncompiled library: -->
 
     <script src="kaltura-player.min.js"></script>
 
@@ -51,12 +25,34 @@
 
 </head>
 <body>
+
+<div class="title">Offline PWA demo</div>
 <div id="player-placeholder-container">
     <div id="player-placeholder"></div>
 </div>
 <!--<button id="clearContent">Load clear content</button>-->
-<button id="changeDrmContent">change protected content</button>
+<button id="changeDrmContent">Change content</button>
 <button id="saveMedia">Download</button>
+<button id="remove">Delete media</button>
+
+<div id="downloadingAni" class="vertical-centered-box">
+    <div class="content">
+        <div class="loader-circle"></div>
+        <div class="loader-line-mask one">
+            <div class="loader-line"></div>
+        </div>
+        <div class="loader-line-mask two">
+            <div class="loader-line"></div>
+        </div>
+        <div class="loader-line-mask three">
+            <div class="loader-line"></div>
+        </div>
+        <div class="loader-line-mask four">
+            <div class="loader-line"></div>
+        </div>
+    </div>
+</div>
+
 <!--<button id="removeBtn">Remove from cache</button>-->
 
 <!-- your application source: -->

@@ -19,7 +19,8 @@ self.addEventListener('install', function(event) {
                  'utils.js',
                  'idb-keyval.js',
                  'kaltura-player.min.js',
-                 'dash.js'
+                 'dash.js',
+                  'style.css'
                 ]
             );
         })
@@ -85,9 +86,33 @@ function onMessage(message){
         case "remove":
             removeFromCache(message.data);
             break;
+        case "ifExists":
+            checkIfExists(message.data);
+            break;
         default:
             console.log("unknown action");
     }
+
+}
+
+
+function checkIfExists(message) {
+    var tag = message.tag;
+    if (!tag){
+        console.error("checkIfExists: no id to find")
+    }
+
+
+    caches.has(tag).then(function(exists) {
+            notifyAllClients({
+                isExists: exists,
+                name: tag,
+                action: "isExists"
+            });
+
+            teardown(tag);
+        // true: your cache exists!
+    });
 
 }
 
@@ -101,6 +126,14 @@ function removeFromCache(message) {
         return Promise.all(
             cacheNames.map(function(cacheName) {
                 if(cacheName == tag) {
+                    notifyAllClients({
+                        removed: true,
+                        name: tag,
+                        action: "removed"
+                    });
+
+                    teardown(tag);
+                    // true: your cache exi
                     return caches.delete(cacheName);
                 }
             })
