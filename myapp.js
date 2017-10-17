@@ -1,197 +1,179 @@
-function pwa_kaltura() {
-    var manifestUriClear = 'https://qa-apache-php7.dev.kaltura.com/p/1091/sp/109100/playManifest/entryId/0_wifqaipd/protocol/https/format/mpegdash/flavorIds/0_m131krws,0_kozg4x1x/a.mpd';
-    var manifestUriDRM = 'https://qa-apache-php7.dev.kaltura.com/p/4171/sp/417100/playManifest/entryId/0_4s6xvtx3/protocol/https/format/mpegdash/flavorIds/0_kl0tqbr3,0_t0bg9cqj,0_912xg2u3/a.mpd';
-    var licenseUrl = 'https://udrm2.dev.kaltura.com/cenc/widevine/license?custom_data=eyJjYV9zeXN0ZW0iOiJPVlAiLCJ1c2VyX3Rva2VuIjoiWm1RM1pUUTRZV0ZpWWpaalpUQmhNVGRtWm1VMU5XSmlObUZrWlRZeU5EVTJOelZqTkRCa01udzBNVGN4T3pReE56RTdNVFV3TmpZM01UVXpOVHN3T3pFMU1EWTFPRFV4TXpVdU1EUTVPVHN3TzNacFpYYzZLaXgzYVdSblpYUTZNVHM3IiwiYWNjb3VudF9pZCI6NDE3MSwiY29udGVudF9pZCI6IjBfNHM2eHZ0eDMiLCJmaWxlcyI6IjBfa2wwdHFicjMsMF90MGJnOWNxaiwwXzkxMnhnMnUzIn0%3D&signature=FusQnIwheWf%2BiK3hdrnBu4eRVn8%3D';
+var licenseUrl = 'https://udrm.kaltura.com/cenc/widevine/license?custom_data=eyJjYV9zeXN0ZW0iOiJPVFQiLCJ1c2VyX3Rva2VuIjoiMjQ1MTczMCIsImFjY291bnRfaWQiOjE5ODI1NTEsImNvbnRlbnRfaWQiOiIwX3JnYzViNmEwXzBfMjdocTNmb3gsMF9yZ2M1YjZhMF8wX3QwMnBwMDNjLDBfcmdjNWI2YTBfMF9mZXoyemMycCIsImZpbGVzIjoiMzAwOTc4NiIsInVkaWQiOiIzQjMyMzQ5Ri00Mzg4LTM5NEQtQjZEOC1BRDE1RTk4NjY0REQiLCJhZGRpdGlvbmFsX2Nhc19zeXN0ZW0iOjB9&signature=xUtiedtBDulKxlMbDXMSqV2biOU%3D';
+var manifestUrl = 'https://cdnapisec.kaltura.com/p/1982551/sp/198255100/playManifest/entryId/0_rgc5b6a0/format/mpegdash/tags/dash/protocol/https/flavorIds/0_t02pp03c/a.mpd';
 
-    // long video
-    //var manifes
-    // tUriDRM = 'https://cdnapisec.kaltura.com/p/1982551/sp/198255100/playManifest/entryId/0_mr1qse99/format/mpegdash/tags/dash/protocol/https/f/a.mpd';
-    //var licenseUrl = 'https://udrm.kaltura.com//cenc/widevine/license?custom_data=eyJjYV9zeXN0ZW0iOiJPVFQiLCJ1c2VyX3Rva2VuIjoiIiwiYWNjb3VudF9pZCI6MTk4MjU1MSwiY29udGVudF9pZCI6IjBfbXIxcXNlOTlfMV85am8zYjh5MiwwX21yMXFzZTk5XzFfMW5xZXBkYzQsMF9tcjFxc2U5OV8wXzFoMHZjbzFsIiwiZmlsZXMiOiIxMDA1MDIwIiwidWRpZCI6ImFhNWUxYjZjOTY5ODhkNjgiLCJhZGRpdGlvbmFsX2Nhc19zeXN0ZW0iOjB9&signature=VfgVQYjKK3rtLkrkomlHQ6q%2F81I%3D&';
-
-
-    playerConfig = {
-        drm: {
-            servers: {
-                'com.widevine.alpha': licenseUrl,
-                'com.microsoft.playready': licenseUrl
+var config1 = {
+    partnerId:1982551,
+    id: "0_rgc5b6a0",
+    entryId: "0_rgc5b6a0",
+    sources:{
+        dash:[
+            {
+                url: manifestUrl,
+                mimetype: 'application/dash+xml',
+                id: 'optional',
+                drmData:
+                    [
+                        {
+                            licenseUrl : licenseUrl,
+                            scheme:  'com.widevine.alpha'
+                        }
+                    ]
             }
-        }
+        ]
+    },
+    plugins: {
     }
+};
 
-    consts = {
-        contentType: 'contentType',
-        drm: 'drm',
-        clear: 'clear',
-        drmMovie: 'drmMovie',
-        clearMovie: 'clearMovie',
-        widevine: 'com.widevine.alpha'
+var config2 = {
+    partnerId:1982551,
+    id: "0_rgc5b6a0",
+    entryId: "0_rgc5b6a0",
+    sources:{
+        dash:[
+            {
+                url: manifestUrl,
+                mimetype: 'application/dash+xml',
+                id: 'optional',
+                drmData:
+                    [
+                        {
+                            licenseUrl : licenseUrl,
+                            scheme:  'com.widevine.alpha'
+                        }
+                    ]
+            }
+        ]
+    },
+    plugins: {
     }
+};
 
 
-    var player;
-    var requestsArr_ = [];
-    var manifestUri_ = manifestUriClear;
+var configs = [config1,config2];
+var configIndex = 0;
 
 
-    function initApp() {
+function pwa_kaltura() {
+
+
+    var kalturaPlayer = null;
+    function initApp(){
+
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js');
         }
+
+        try {
+            var config = configs[configIndex];
+
+            kalturaPlayer = KalturaPlayer.setup('player-placeholder', config);
+            configureSession(config);
+            kalturaPlayer.play();
+
+        } catch (e) {
+            console.error(e.message)
+        }
+    }
+
+
+    function assignUiListeners(){
+
+        var video = document.getElementsByTagName("video")[0];
+
+        document.getElementById("changeDrmContent").addEventListener('click',function(){
+            var config = configs[configIndex];
+            changeMedia(config);
+            configIndex = (configIndex+1)%2;
+        });
+
+
+        video.addEventListener('session-restore', function (evt) {
+            const session = evt.detail;
+            const tag = configs[configIndex].entryId;
+            LicensePersister.restore(session, tag, video);
+        });
+
+        document.getElementById("saveMedia").addEventListener('click',function(){
+            saveMedia(configs[configIndex]);
+        });
 
         navigator.serviceWorker.addEventListener('message', function (event) {
             console.log("event from sw: " + JSON.stringify(event.data))
             window.postMessage(event.data, '*');
         });
 
-        // Install built-in polyfills to patch browser incompatibilities.
-        shaka.polyfill.installAll();
+     }
 
-        var videoElement = document.getElementById('video');
-        //var videoElement = document.createElement("video");
 
-        var video = videoElement;
-
-        player = new shaka.Player(video);
-
-        // Check to see if the browser supports the basic APIs Shaka needs.
-        if (shaka.Player.isBrowserSupported()) {
-            // Everything looks good!
-            initPlayer();
-        } else {
-            // This browser does not have the minimum set of APIs we need.
-            console.error('Browser not supported!');
+     function changeMedia(config){
+        try {
+            kalturaPlayer.configure(config);
+            configureSession(config);
+            kalturaPlayer.play();
+        } catch (e) {
+            console.error(e.message)
         }
-
-        video.addEventListener('session-restore', function (evt) {
-            const session = evt.detail;
-            LicensePersister.restore(session, consts.drmMovie, video);
-        });
-
-    }
+     }
 
 
-    function assignUiListeners(){
-        var localstorage = window.localStorage;
+     function configureSession(config){
+         var video = document.getElementsByTagName("video")[0];
 
-        document.getElementById("clearContent").addEventListener('click',function(){
-            localstorage.setItem(consts.contentType,consts.clear);
-            manifestUri_ = manifestUriClear;
-            initPlayer();
-        });
+         if (navigator.onLine){
+             delete video.dataset.offlineEncrypted;
+         }else{
+             video.dataset.offlineEncrypted=true;
+         }
 
-        document.getElementById("drmContent").addEventListener('click',function(){
-            localstorage.setItem(consts.contentType,consts.drm);
-            manifestUri_ = manifestUriDRM;
-            initPlayer(playerConfig);
-        });
+         var sessionRestoreHandler = function(evt){
+             const session = evt.detail;
+             const tag = config.id;
+             LicensePersister.restore(session, tag, video);
+         }
 
-        document.getElementById("fetchSome").addEventListener('click',function(){
-            if (localstorage.getItem(consts.contentType) === consts.drm){
-                manifestUri_ = manifestUriDRM;
-                saveMedia();
-            }else{
-                manifestUri_ = manifestUriClear;
-                saveMedia();
-            }
-        });
+         video.removeEventListener('session-restore', sessionRestoreHandler);
+         video.addEventListener('session-restore', sessionRestoreHandler);
+     }
 
-        document.getElementById("removeBtn").addEventListener('click',function(){
-            if (localstorage.getItem(consts.contentType) === consts.drm){
-                removeMedia(consts.drmMovie);
-            }else{
-                removeMedia(consts.clearMovie);
-            }
-        })
-    }
+     function saveMedia(config){
+         var license_ = config.sources.dash[0].drmData[0].licenseUrl;
+         var manifest_ = config.sources.dash[0].url;
+         var tag_ = config.id;
 
+         var drmInfo_ = {
+             name: 'com.widevine.alpha',
+             url: license_,
+             manifest: manifest_
+         };
+         LicensePersister.persist(tag_, drmInfo_);
 
-
-    function saveMedia(){
-        var tag = consts.clearMovie;
-        if (window.localStorage.getItem(consts.contentType) === consts.drm) {
-            tag = consts.drmMovie;
-
-            var drmInfo = {
-                name: 'com.widevine.alpha',
-                url: licenseUrl,
-                manifest: manifestUriDRM
-            };
-            LicensePersister.persist(consts.drmMovie, drmInfo);
-
-        }
-
-        getUrls(manifestUri_,function(requestsArr_){
+         getUrls(manifest_,function(requestsArr_){
 
             for (var i in requestsArr_) {
                 requestsArr_[i] = requestsArr_[i].replace(/^http:\/\//i, 'https://');
             }
             var message = {
                 'action': "backgroundfetch",
-                'tag': tag,
+                'tag': tag_,
                 'requests': requestsArr_
             }
 
             navigator.serviceWorker.controller.postMessage(message);
-        })
-    }
+            });
 
-
-    function initPlayer(playerConfig) {
-        player.resetConfiguration();
-        if (playerConfig){
-            player.configure(playerConfig);
-        }
-;
-
-
-        // Attach player to the window to make it easy to access in the JS console.
-        window.player = player;
-
-        // Listen for error events.
-        player.addEventListener('error', onErrorEvent);
-        var video = document.getElementById('video');
-
-
-
-        if (navigator.onLine){
-            delete video.dataset.offlineEncrypted;
-        }else{
-            video.dataset.offlineEncrypted=true;
-        }
-
-
-        // Try to load a manifest.
-        // This is an asynchronous process.
-        player.load(manifestUri_).then(function(manifest) {
-
-            // This runs if the asynchronous load is successful.
-            console.log('The video has now been loaded!');
-        }).catch(onError);  // onError is executed if the asynchronous load fails.
-
-    }
-
-    function onErrorEvent(event) {
-        // Extract the shaka.util.Error object from the event.
-        onError(event.detail);
-    }
-
-    function onError(error) {
-        // Log the error.
-        console.error('Error code', error.code, 'object', error);
-    }
-
+     }
 
 
     function removeMedia(mediaId){
         var message = {
             action: "remove",
             tag: mediaId
-        }
+        };
         navigator.serviceWorker.controller.postMessage(message);
     }
 
     return{
-        saveMedia: saveMedia,
         removeMedia: removeMedia,
         assignUiListeners: assignUiListeners,
         initApp: initApp

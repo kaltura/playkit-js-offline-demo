@@ -1,30 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <title>Title</title>
+    <style>
+        body {
+            background-color: #212121;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        #player-placeholder-container {
+            display: block;
+            margin: auto;
+            max-width: 854px;
+            position: relative;
+        }
+
+        #player-placeholder {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.5%;
+            background-color: #000;
+        }
+    </style>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
             crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="myapp.css">
     <!-- Shaka Player uncompiled library: -->
+
+    <!--<script src="kaltura-player.min.js"></script>-->
+
+    <script src="kaltura-player.js"></script>
+
     <script src="shaka-player.compiled.js"></script>
+
     <script src="idb-keyval.js"></script>
     <script src="utils.js"></script>
     <script src="license-persister.js"></script>
     <script src="dash.js"></script>
 
 
-    <!-- your application source: -->
-    <script src="myapp.js"></script>
+
 </head>
 <body>
-<video id="video"
-       width="640"
-       poster="//shaka-player-demo.appspot.com/assets/poster.jpg"
-       controls autoplay></video>
-<button id="clearContent">Load clear content</button>
-<button id="drmContent">Load protected content</button>
-<button id="fetchSome">Background fetch</button>
-<button id="removeBtn">Remove from cache</button>
+<div id="player-placeholder-container">
+    <div id="player-placeholder"></div>
+</div>
+<!--<button id="clearContent">Load clear content</button>-->
+<button id="changeDrmContent">change protected content</button>
+<button id="saveMedia">Download</button>
+<!--<button id="removeBtn">Remove from cache</button>-->
+
+<!-- your application source: -->
+<script src="myapp.js"></script>
 </body>
 </html>
+
