@@ -8,17 +8,17 @@ var number = 0;
 
 
 self.addEventListener('install', function(event) {
-    // Perform install steps adds needs update update update update
+    // Perform install steps adds needs update update update update 1602
     event.waitUntil(
         caches.open(cacheName).then(function(cache) {
             return cache.addAll(
                 [
                  'https://cdnapisec.kaltura.com/p/1982551/sp/198255100/playManifest/entryId/0_rgc5b6a0/format/mpegdash/tags/dash/protocol/https/flavorIds/0_t02pp03c/a.mpd',
                  'index.html',
-                 'shaka-player.compiled.js',
                  'myapp.js',
                  'utils.js',
                  'idb-keyval.js',
+                 'kaltura-player.min.js',
                  'dash.js'
                 ]
             );
